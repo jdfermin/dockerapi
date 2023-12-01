@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URL'] = environ.get('DB_URL')
 db = SQLAlchemy(app)
 
-class Directory(db.Model):
-    __tablename__ = 'directory'
+class Directories(db.Model):
+    __tablename__ = 'directories'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
@@ -22,11 +22,11 @@ def status():
     return make_response('pong',200)
 
 #crear directorio
-@app.route('/directories',methods=['GET'])
+@app.route('/directories', methods=['POST'])
 def create_directory():
     try:
         data = request.get_json()
-        new_directory = Directory(directory=data['name'])
+        new_directory = Directories(directory=data['name'])
         db.session.add(new_directory)
         db.session.commit()
         return make_response(jsonify({'message': 'directorio creado'}), 201)
@@ -37,7 +37,7 @@ def create_directory():
 @app.route('/directories', methods=['GET'])
 def get_directories():
     try:
-        directories = Directory.query.all()
+        directories = Directories.query.all()
         return make_response(jsonify({'directories': [directory.json() for directory in directories]}), 200)
     except e:
         return make_response(jsonify({'message': 'error al consultar directorios'}), 500)
