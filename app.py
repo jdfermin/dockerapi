@@ -38,7 +38,9 @@ def create_directory():
 def get_directories():
     try:
         directories = Directories.query.all()
-        return make_response(jsonify({'directories': [directory.json() for directory in directories]}), 200)
+        if directories:
+            return make_response(jsonify({'directories': [directory.json() for directory in directories]}), 200)
+        return make_response(jsonify({'message': 'no hay directorios registrados'}), 404)
     except e:
         return make_response(jsonify({'message': 'error al consultar directorios'}), 500)
 
@@ -47,6 +49,9 @@ def get_directories():
 def get_directory(id):
     try:
         directory = Directories.query.filter_by(id=id).first()
-        return make_response(jsonify({'directorio': directory.json()}), 200)
+        if directory:
+            return make_response(jsonify({'directorio': directory.json()}), 200)
+        return make_response(jsonify({'message': 'directorio no encontrado'}), 404)
     except e:
         return make_response(jsonify({'message': 'error al consultar directorio'}), 500)
+    
