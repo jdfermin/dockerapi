@@ -11,9 +11,10 @@ class Directories(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
+    emails = db.Column(db.ARRAY(db.String(50))) 
 
     def json(self):
-        return{'id': self.id, 'name': self.name}
+        return{'id': self.id, 'name': self.name, 'emails': self.emails}
 
 db.create_all()
 
@@ -26,7 +27,7 @@ def status():
 def create_directory():
     try:
         data = request.get_json()
-        new_directory = Directories(name=data['name'])
+        new_directory = Directories(name=data['name'], emails=data['emails'])
         db.session.add(new_directory)
         db.session.commit()
         return make_response(jsonify({'message': 'directorio creado'}), 201)
@@ -63,6 +64,7 @@ def update_directory(id):
         if directory:
             data = request.get_json()
             directory.name = data['name']
+            directory.emails = data['emails']
             db.session.commit()
             return make_response(jsonify({'message': 'directorio actualizado'}), 200)
         return make_response(jsonify({'message': 'directorio no encontrado'}), 404)
