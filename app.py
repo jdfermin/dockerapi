@@ -20,3 +20,24 @@ db.create_all()
 @app.route('/status',methods=['GET'])
 def status():
     return make_response('pong',200)
+
+#crear directorio
+@app.route('/directories',methods=['GET'])
+def create_directory():
+    try:
+        data = request.get_json()
+        new_directory = Directory(directory=data['name'])
+        db.session.add(new_directory)
+        db.session.commit()
+        return make_response(jsonify({'message': 'directorio creado'}), 201)
+    except e:
+        return make_response(jsonify({'message': 'error al crear direcotorio'}), 500)
+
+#consultar todos los directorios
+@app.route('/directories', methods=['GET'])
+def get_directories():
+    try:
+        directories = Directory.query.all()
+        return make_response(jsonify({'directories': [directory.json() for directory in directories]}), 200)
+    except e:
+        return make_response(jsonify({'message': 'error al consultar directorios'}), 500)
