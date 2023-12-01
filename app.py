@@ -41,3 +41,12 @@ def get_directories():
         return make_response(jsonify({'directories': [directory.json() for directory in directories]}), 200)
     except e:
         return make_response(jsonify({'message': 'error al consultar directorios'}), 500)
+
+#consultar directorio por id
+@app.route('/directories/<int:id>', methods=['GET'])
+def get_directory(id):
+    try:
+        directory = Directories.query.filter_by(id=id).first()
+        return make_response(jsonify({'directorio': directory.json()}), 200)
+    except e:
+        return make_response(jsonify({'message': 'error al consultar directorio'}), 500)
