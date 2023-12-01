@@ -54,4 +54,18 @@ def get_directory(id):
         return make_response(jsonify({'message': 'directorio no encontrado'}), 404)
     except e:
         return make_response(jsonify({'message': 'error al consultar directorio'}), 500)
-    
+
+# actualizar directorio
+@app.route('/directories/<int:id>', methods=['PUT'])
+def update_directory(id):
+    try:
+        directory = Directories.query.filter_by(id=id).first()
+        if directory:
+            data = request.get_json()
+            directory.name = data['name']
+            db.session.commit()
+            return make_response(jsonify({'message': 'directorio actualizado'}), 200)
+        return make_response(jsonify({'message': 'directorio no encontrado'}), 404)
+    except e:
+        return make_response(jsonify({'message': 'error al actualizar directorio'}), 500)
+   
