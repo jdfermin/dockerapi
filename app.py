@@ -68,4 +68,18 @@ def update_directory(id):
         return make_response(jsonify({'message': 'directorio no encontrado'}), 404)
     except e:
         return make_response(jsonify({'message': 'error al actualizar directorio'}), 500)
-   
+
+
+#eliminar directorio
+@app.route('/directories/<int:id>', methods=['DELETE'])
+def delete_directory(id):
+    try:
+        directory = Directories.query.filter_by(id=id).first()
+        if directory:
+            db.session.delete(directory)
+            db.session.commit()
+            return make_response(jsonify({'message': 'directorio eliminado'}), 200)
+        return make_response(jsonify({'message': 'directorio no encontrado'}), 404)
+    except e:
+        return make_response(jsonify({'message': 'error al eliminar directorio'}), 500)
+
