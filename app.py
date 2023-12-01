@@ -26,7 +26,7 @@ def status():
 def create_directory():
     try:
         data = request.get_json()
-        new_directory = Directories(directory=data['name'])
+        new_directory = Directories(name=data['name'])
         db.session.add(new_directory)
         db.session.commit()
         return make_response(jsonify({'message': 'directorio creado'}), 201)
