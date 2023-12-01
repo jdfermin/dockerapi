@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URL'] = environ.get('DB_URL')
 db = SQLAlchemy(app)
 
-class Directory(db.Model)
+class Directory(db.Model):
     __tablename__ = 'directory'
 
     id = db.Column(db.Integer, primary_key=True)
