@@ -32,12 +32,12 @@ def create_directory():
     try:
         data = request.get_json()
         new_directory = Directories(
-            name=data['name'], 
-            #emails=data['emails']
+            name=data['name'] 
+            #, emails=data['emails']
             )
         db.session.add(new_directory)
         db.session.commit()
-        return make_response(jsonify({directory.json() for directory in new_directory}), 201)
+        return make_response(jsonify(new_directory.json()), 201)
     except e:
         return make_response(jsonify({'message': 'error al crear direcotorio'}), 500)
 
