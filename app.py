@@ -43,7 +43,7 @@ def create_directory():
 
 #consultar todos los directorios
 @app.route('/directories', methods=['GET'])
-def get_directories(page):
+def get_directories():
     try:
         directories = Directories.query.all()
         if directories:
