@@ -47,7 +47,7 @@ def get_directories(page):
     try:
         directories = Directories.query.all()
         if directories:
-            return make_response(jsonify({'directories': [directory.json() for directory in directories], 'page': page}), 200)
+            return make_response(jsonify({'directories': [directory.json() for directory in directories]}), 200)
         return make_response(jsonify({'message': 'no hay directorios registrados'}), 404)
     except e:
         return make_response(jsonify({'message': 'error al consultar directorios'}), 500)
