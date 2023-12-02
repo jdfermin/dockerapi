@@ -78,6 +78,21 @@ def update_directory(id):
     except e:
         return make_response(jsonify({'message': 'error al actualizar directorio'}), 500)
 
+# actualizar parcialmente directorio
+@app.route('/directories/<int:id>', methods=['PATCH'])
+def updatepartial_directory(id):
+    try:
+        directory = Directories.query.filter_by(id=id).first()
+        if directory:
+            data = request.get_json()
+            if data['name']:
+                directory.name = data['name']
+            #directory.emails = data['emails']
+            db.session.commit()
+            return make_response(jsonify(directory.json()), 200)
+        return make_response(jsonify({'message': 'directorio no encontrado'}), 404)
+    except e:
+        return make_response(jsonify({'message': 'error al actualizar directorio'}), 500)
 
 #eliminar directorio
 @app.route('/directories/<int:id>', methods=['DELETE'])
