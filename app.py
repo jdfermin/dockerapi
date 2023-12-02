@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from os import environ
-#from sqlalchemy.dialects import postgresql
+from sqlalchemy.dialects import postgresql
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URL'] = environ.get('DB_URL')
@@ -12,13 +12,13 @@ class Directories(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
-    #emails = db.Column(db.ARRAY(db.String(50)),unique=True, nullable=False) 
+    emails = db.Column(db.ARRAY(db.String(50)),unique=True, nullable=False) 
 
     def json(self):
         return{
             'id': self.id, 
-            'name': self.name 
-            #'emails': self.emails
+            'name': self.name, 
+            'emails': self.emails
             }
 
 db.create_all()
