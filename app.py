@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from os import environ
-from sqlalchemy.dialects.postgresql import ARRAY
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URL'] = environ.get('DB_URL')
@@ -12,13 +11,13 @@ class Directories(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
-    emails = db.Column(db.ARRAY(db.String(50)),unique=True, nullable=False) 
+    #emails = db.Column(db.ARRAY(db.String(50)),unique=True, nullable=False) 
 
     def json(self):
         return{
             'id': self.id, 
-            'name': self.name, 
-            'emails': self.emails
+            'name': self.name 
+            #'emails': self.emails
             }
 
 db.create_all()
@@ -33,8 +32,8 @@ def create_directory():
     try:
         data = request.get_json()
         new_directory = Directories(
-            name=data['name'], 
-            emails=data['emails']
+            name=data['name'] 
+            #, emails=data['emails']
             )
         db.session.add(new_directory)
         db.session.commit()
@@ -44,11 +43,11 @@ def create_directory():
 
 #consultar todos los directorios
 @app.route('/directories', methods=['GET'])
-def get_directories():
+def get_directories(page):
     try:
         directories = Directories.query.all()
         if directories:
-            return make_response(jsonify({'directories': [directory.json() for directory in directories]}), 200)
+            return make_response(jsonify({'directories': [directory.json() for directory in directories], 'page': page}), 200)
         return make_response(jsonify({'message': 'no hay directorios registrados'}), 404)
     except e:
         return make_response(jsonify({'message': 'error al consultar directorios'}), 500)
@@ -72,7 +71,7 @@ def update_directory(id):
         if directory:
             data = request.get_json()
             directory.name = data['name']
-            directory.emails = data['emails']
+            #directory.emails = data['emails']
             db.session.commit()
             return make_response(jsonify(directory.json()), 200)
         return make_response(jsonify({'message': 'directorio no encontrado'}), 404)
