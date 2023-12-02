@@ -73,7 +73,7 @@ def update_directory(id):
             directory.name = data['name']
             #directory.emails = data['emails']
             db.session.commit()
-            return make_response(jsonify({'message': 'directorio actualizado'}), 200)
+            return make_response(jsonify(directory.json()), 200)
         return make_response(jsonify({'message': 'directorio no encontrado'}), 404)
     except e:
         return make_response(jsonify({'message': 'error al actualizar directorio'}), 500)
