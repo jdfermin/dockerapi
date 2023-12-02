@@ -1,0 +1,6 @@
+APP_NAME='ferminvanegas'
+DB_NAME='postgres'
+DB_USR='postgres'
+DB_PWD='postgres'
+DOMAIN_NAME='ferminvanegas.okd-dev.ucab.edu.ve'
+PROJECT_NAME='pj-jdfermin-20'
