@@ -1,4 +1,4 @@
-APP_NAME='ferminvanegas'
+APP_NAME='flask_app'
 DB_NAME='postgres'
 DB_USR='postgres'
 DB_PWD='postgres'

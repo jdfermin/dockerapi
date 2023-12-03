@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, current_app, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from os import environ
 #from sqlalchemy.dialects import postgresql
@@ -20,8 +20,8 @@ class Directories(db.Model):
             'name': self.name
             #'emails': self.emails
             }
-
-db.create_all()
+with app.app_context():
+    db.create_all()
 
 @app.route('/status',methods=['GET'])
 def status():
